@@ -1,23 +1,46 @@
-"use client"
+"use client";
 
-import { Table } from "@tanstack/react-table"
-import { X } from "lucide-react"
+import { Table } from "@tanstack/react-table";
+import { Trash, X } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DataTableViewOptions } from "@/components/data-table-view-options"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { DataTableViewOptions } from "@/components/data-table-view-options";
 
-import { priorities, statuses } from "@/lib/data"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { priorities, statuses } from "@/lib/data";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import DataTableCreateForm from "./data-table-create-form";
+import { toast } from "sonner";
+import { DeleteTasks } from "@/app/api/tasks/route";
+import { useRouter } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
 }
 
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0
+  const isFiltered = table.getState().columnFilters.length > 0;
+  const selectedRowsCount = table.getSelectedRowModel().rows.length;
+  const router = useRouter();
+
+  const handleDeleteSelected = () => {
+    const selectedRows = table.getSelectedRowModel().rows;
+    const tasksIds = selectedRows.map(
+      (row) => (row.original as { id: string }).id
+    );
+
+    DeleteTasks(tasksIds).then((response) => {
+      if (response.success) {
+        toast.success(response.message);
+        table.resetRowSelection();
+        router.refresh();
+      } else {
+        toast.error(response.message);
+      }
+    });
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -31,18 +54,22 @@ export function DataTableToolbar<TData>({
           className="h-8 w-[150px] lg:w-[250px]"
         />
         {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
+          <div className="hidden sm:block">
+            <DataTableFacetedFilter
+              column={table.getColumn("status")}
+              title="Status"
+              options={statuses}
+            />
+          </div>
         )}
         {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
+          <div className="hidden sm:block">
+            <DataTableFacetedFilter
+              column={table.getColumn("priority")}
+              title="Priority"
+              options={priorities}
+            />
+          </div>
         )}
         {isFiltered && (
           <Button
@@ -55,7 +82,23 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <div className="flex items-center space-x-2">
+        {selectedRowsCount > 1 && (
+          <Button
+            className="h-8"
+            onClick={handleDeleteSelected}
+            size="sm"
+            variant="outline"
+          >
+            <div className="space-x-2 flex">
+              <Trash className="h-4 w-4" />
+              <span className="hidden sm:flex">Eliminar Tareas</span>
+            </div>
+          </Button>
+        )}
+        <DataTableViewOptions table={table} />
+        <DataTableCreateForm />
+      </div>
     </div>
-  )
+  );
 }
