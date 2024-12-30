@@ -1,19 +1,34 @@
 import { taskSchema } from "@/lib/schema";
 import { z } from "zod";
 
-export async function CreateTask(values: z.infer<typeof taskSchema>) {
-  const response = await fetch("http://localhost:5000/api/tasks", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(values),
-  });
+const URL = process.env.API_URL || "http://localhost:5000";
 
-  return {
-    success: response.ok,
-    message: "Task created successfully",
-  };
+export async function CreateTask(values: z.infer<typeof taskSchema>) {
+  try {
+    const response = await fetch(`${URL}/api/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to create task: ${errorText}`);
+    }
+
+    return {
+      success: true,
+      message: "Task created successfully",
+    };
+  } catch (error) {
+    console.log("Failed to create task:", error);
+    return {
+      success: false,
+      message: "Failed to create task",
+    };
+  }
 }
 
 export async function UpdateTask(
@@ -21,7 +36,7 @@ export async function UpdateTask(
   id: string
 ) {
   try {
-    const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+    const response = await fetch(`${URL}/api/tasks/${id} `, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -29,35 +44,56 @@ export async function UpdateTask(
       body: JSON.stringify(values),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to update task: ${errorText}`);
+    }
+
     return {
       success: response.ok,
       message: "Task updated successfully",
     };
   } catch (error) {
     console.error("Failed to update task:", error);
-    throw error;
+    return {
+      success: false,
+      message: "Failed to update task",
+    };
   }
 }
 
 export async function DeleteTask(id: string) {
-  const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
-    method: "DELETE",
-  });
+  try {
+    const response = await fetch(`${URL}/api/tasks/${id}`, {
+      method: "DELETE",
+    });
 
-  return {
-    success: response.ok,
-    message: "Task deleted successfully",
-  };
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to delete task: ${errorText}`);
+    }
+
+    return {
+      success: response.ok,
+      message: "Task deleted successfully",
+    };
+  } catch (error) {
+    console.error("Failed to delete task:", error);
+    return {
+      success: false,
+      message: "Failed to delete task",
+    };
+  }
 }
 
 export async function DeleteTasks(tasksIds: string[]) {
   try {
-    const response = await fetch("http://localhost:5000/api/tasks", {
+    const response = await fetch(`${URL}/api/tasks`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(tasksIds), // Enviando el array directamente
+      body: JSON.stringify(tasksIds),
     });
 
     if (!response.ok) {
@@ -67,12 +103,13 @@ export async function DeleteTasks(tasksIds: string[]) {
 
     return {
       success: true,
-      message: "Task/s deleted successfully",
+      message: "Tasks deleted successfully",
     };
   } catch (error) {
     console.error("Error deleting tasks:", error);
     return {
       success: false,
+      message: "Failed to delete tasks",
     };
   }
 }
