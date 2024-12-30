@@ -54,22 +54,18 @@ export function DataTableToolbar<TData>({
           className="h-8 w-[150px] lg:w-[250px]"
         />
         {table.getColumn("status") && (
-          <div className="hidden sm:block">
-            <DataTableFacetedFilter
-              column={table.getColumn("status")}
-              title="Status"
-              options={statuses}
-            />
-          </div>
+          <DataTableFacetedFilter
+            column={table.getColumn("status")}
+            title="Status"
+            options={statuses}
+          />
         )}
         {table.getColumn("priority") && (
-          <div className="hidden sm:block">
-            <DataTableFacetedFilter
-              column={table.getColumn("priority")}
-              title="Priority"
-              options={priorities}
-            />
-          </div>
+          <DataTableFacetedFilter
+            column={table.getColumn("priority")}
+            title="Priority"
+            options={priorities}
+          />
         )}
         {isFiltered && (
           <Button
