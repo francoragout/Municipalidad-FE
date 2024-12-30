@@ -11,7 +11,7 @@ import { priorities, statuses } from "@/lib/data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import DataTableCreateForm from "./data-table-create-form";
 import { toast } from "sonner";
-import { DeleteTasks } from "@/app/api/tasks/route";
+import { DeleteTasks } from "@/app/tasks/tasks.api";
 import { useRouter } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {
