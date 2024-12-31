@@ -14,8 +14,10 @@ export const metadata: Metadata = {
 
 type Task = z.infer<typeof taskSchema>
 
+const URL = process.env.API_URL || "http://localhost:5000";
+
 async function getTasks(): Promise<Task[]> {
-  const data = await fetch("http://localhost:5000/api/tasks")
+  const data = await fetch(`${URL}/api/tasks`)
   const tasks = await data.json()
   return tasks.map((task: Task) => taskSchema.parse(task))
 }

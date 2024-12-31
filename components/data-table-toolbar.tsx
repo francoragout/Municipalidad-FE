@@ -6,9 +6,6 @@ import { Trash, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/data-table-view-options";
-
-import { priorities, statuses } from "@/lib/data";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import DataTableCreateForm from "./data-table-create-form";
 import { toast } from "sonner";
 import { DeleteTasks } from "@/app/tasks/tasks.api";
@@ -53,20 +50,6 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
-        )}
         {isFiltered && (
           <Button
             variant="ghost"
