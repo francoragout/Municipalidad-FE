@@ -1,3 +1,5 @@
+'use server';
+
 import { taskSchema } from "@/lib/schema";
 import { z } from "zod";
 

@@ -71,7 +71,7 @@ export function DataTableToolbar<TData>({
           >
             <div className="space-x-2 flex">
               <Trash className="h-4 w-4" />
-              <span className="hidden sm:flex">Eliminar Tareas</span>
+              <span className="hidden sm:flex">Delete Tasks</span>
             </div>
           </Button>
         )}
