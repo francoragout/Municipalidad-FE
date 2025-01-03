@@ -10,6 +10,8 @@ import DataTableCreateForm from "./data-table-create-form";
 import { toast } from "sonner";
 import { DeleteTasks } from "@/lib/tasks/tasks.api";
 import { useRouter } from "next/navigation";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { priorities, statuses } from "@/lib/data";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -50,6 +52,24 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        {table.getColumn("status") && (
+          <div className="hidden md:block">
+            <DataTableFacetedFilter
+              column={table.getColumn("status")}
+              title="Status"
+              options={statuses}
+            />
+          </div>
+        )}
+        {table.getColumn("priority") && (
+          <div className="hidden md:block">
+            <DataTableFacetedFilter
+              column={table.getColumn("priority")}
+              title="Priority"
+              options={priorities}
+            />
+          </div>
+        )}
         {isFiltered && (
           <Button
             variant="ghost"
