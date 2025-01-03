@@ -13,7 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
-import { DeleteTask } from "@/app/tasks/tasks.api";
+import { DeleteTask } from "@/lib/tasks/tasks.api";
 import { useRouter } from "next/navigation";
 
 interface DataTableRowActionsProps<TData> {

@@ -37,7 +37,7 @@ import {
 import { cn } from "@/lib/utils";
 import { labels, priorities, statuses } from "@/lib/data";
 import { toast } from "sonner";
-import { CreateTask } from "@/app/tasks/tasks.api";
+import { CreateTask } from "@/lib/tasks/tasks.api";
 import { useRouter } from "next/navigation";
 
 export default function DataTableCreateForm() {

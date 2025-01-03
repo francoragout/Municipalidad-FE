@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/data-table-view-options";
 import DataTableCreateForm from "./data-table-create-form";
 import { toast } from "sonner";
-import { DeleteTasks } from "@/app/tasks/tasks.api";
+import { DeleteTasks } from "@/lib/tasks/tasks.api";
 import { useRouter } from "next/navigation";
 
 interface DataTableToolbarProps<TData> {

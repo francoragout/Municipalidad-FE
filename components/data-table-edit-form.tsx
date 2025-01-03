@@ -37,7 +37,7 @@ import {
 import { cn } from "@/lib/utils";
 import { labels, priorities, statuses } from "@/lib/data";
 import { toast } from "sonner";
-import { UpdateTask } from "@/app/tasks/tasks.api";
+import { UpdateTask } from "@/lib/tasks/tasks.api";
 import { useRouter } from "next/navigation";
 
 type Task = z.infer<typeof taskSchema>;
