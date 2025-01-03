@@ -17,7 +17,9 @@ type Task = z.infer<typeof taskSchema>
 const URL = process.env.API_URL || "http://localhost:5000";
 
 async function getTasks(): Promise<Task[]> {
-  const data = await fetch(`${URL}/api/tasks`)
+  const data = await fetch(`${URL}/api/tasks`, {
+    cache: "no-store",
+  })
   const tasks = await data.json()
   return tasks.map((task: Task) => taskSchema.parse(task))
 }
