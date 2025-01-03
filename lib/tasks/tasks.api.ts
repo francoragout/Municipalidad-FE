@@ -1,7 +1,7 @@
 import { taskSchema } from "@/lib/schema";
 import { z } from "zod";
 
-const URL = process.env.API_URL || "http://localhost:5000";
+const URL = process.env.API_URL
 
 export async function CreateTask(values: z.infer<typeof taskSchema>) {
   try {
